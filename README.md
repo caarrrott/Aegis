@@ -43,7 +43,30 @@ uv run uvicorn assistant.api:app --reload
 
 Open http://localhost:8000.
 
+The web client is built into `web/index.html`, which the FastAPI route already
+serves. Rebuild it after changing the UI:
+
+```bash
+cd web
+npm install
+npm run build
+```
+
+For frontend development, run the Vite dev server alongside the API. It proxies
+`/ask`, `/documents`, and `/health` to port 8000:
+
+```bash
+cd web
+npm run dev
+# open http://localhost:5173
+```
+
 Upload policy files through the web page and ask questions as different users.
+
+The UI ships in two themes — daylight (warm paper) and night (deep forest
+charcoal) — with a toggle in the top bar. The choice is remembered in
+`localStorage`; before a choice is made it follows the system
+`prefers-color-scheme`.
 
 ### Demo users
 
@@ -84,7 +107,7 @@ Upload policy files through the web page and ask questions as different users.
 | AI models | OpenAI (`gpt-4o-mini`, `text-embedding-3-small`) |
 | Database  | PostgreSQL 17 + pgvector (Docker)                |
 | Search    | Hybrid (vector + keyword)                        |
-| Website   | One simple HTML page                             |
+| Website   | React 19 + Vite (served as one HTML file)        |
 
 ## How to format a policy file
 
@@ -133,7 +156,9 @@ Department examples:
 │ ├── pipeline.py # Runs the full process
 │ └── api.py # Web endpoints
 ├── prompts/ # AI instructions (plain text files)
-└── web/index.html # Upload + chat page
+├── web/
+│ ├── app/ # React source (components, styles, API client)
+│ └── index.html # Built client served by FastAPI
 ```
 
 ## Who can see what

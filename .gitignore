@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.env
+
+# Frontend
+web/node_modules/
+web/dist/
+web/app/dist/
+npm-debug.log*
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.DS_Store
