@@ -12,7 +12,7 @@ export function EmptyState({ persona, onPick }: EmptyStateProps) {
       <div className="crest" aria-hidden="true">
         <ShieldMark size={26} />
       </div>
-      <p className="eyebrow">Aegis policy assistant</p>
+      <p className="eyebrow">Aegis</p>
       <h2 className="empty-title">
         How can I <em>help</em> today?
       </h2>

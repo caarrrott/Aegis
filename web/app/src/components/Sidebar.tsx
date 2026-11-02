@@ -24,7 +24,7 @@ export function Sidebar({
           </span>
           <span className="brand-text">
             <span className="brand-name">Aegis</span>
-            <span className="brand-sub">Policy intelligence</span>
+            <span className="brand-sub">Workspace intelligence</span>
           </span>
           <button
             type="button"

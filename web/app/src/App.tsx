@@ -333,7 +333,7 @@ export default function App() {
             <div className="topbar-copy">
               <p className="label">Company workspace</p>
               <h1 className="topbar-title">
-                Policy assistant
+                Aegis
               </h1>
             </div>
           </div>
