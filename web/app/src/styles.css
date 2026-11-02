@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
 /* ==========================================================================
    Aegis — design tokens
    A quiet, editorial system: warm paper, deep ink, one forest accent.
@@ -2365,6 +2367,132 @@ kbd {
 .composer-hint {
   max-width: 48rem;
   justify-content: center;
+}
+
+/* JellyKit-inspired editorial finish: high-contrast ink, cream, and a single electric accent. */
+:root {
+  --paper: #f4f1e8;
+  --paper-deep: #e8e4d8;
+  --paper-glow: #faf8f2;
+  --surface: #fbfaf6;
+  --surface-raised: #ffffff;
+  --sidebar-1: #eeebe2;
+  --sidebar-2: #e8e4da;
+  --ink: #171716;
+  --ink-soft: #343330;
+  --muted: #68665f;
+  --faint: #858177;
+  --line: #c9c5ba;
+  --line-strong: #9d998e;
+  --accent: #e9bd21;
+  --accent-strong: #c99d08;
+  --accent-soft: #fff0a9;
+  --on-accent: #171716;
+  --sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --serif: "Space Grotesk", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --radius: 0.45rem;
+}
+
+[data-theme="dark"] {
+  --paper: #111211;
+  --paper-deep: #1c1d1b;
+  --paper-glow: #171816;
+  --surface: #171816;
+  --surface-raised: #20211f;
+  --sidebar-1: #151615;
+  --sidebar-2: #111211;
+  --ink: #f4f1e8;
+  --ink-soft: #d3d0c6;
+  --muted: #9d9a90;
+  --faint: #77746b;
+  --line: #454640;
+  --line-strong: #73746b;
+  --accent: #f3c933;
+  --accent-strong: #ffdb5b;
+  --accent-soft: #443a13;
+  --on-accent: #171716;
+}
+
+body {
+  letter-spacing: -0.01em;
+}
+
+.brand-mark {
+  border-radius: 0.35rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.sidebar,
+.topbar {
+  border-color: var(--ink);
+}
+
+.sidebar {
+  background: var(--sidebar-1);
+}
+
+.topbar {
+  background: var(--paper);
+  backdrop-filter: none;
+}
+
+.topbar-title,
+.empty-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+.empty-title {
+  font-size: clamp(2.25rem, 5vw, 3.8rem);
+  line-height: 0.94;
+}
+
+.empty-title em {
+  display: inline-block;
+  padding: 0.02em 0.13em;
+  background: var(--accent);
+  color: var(--ink);
+  font-style: normal;
+  transform: rotate(-1deg);
+}
+
+.crest {
+  border-radius: 0.35rem;
+  background: var(--accent);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.suggestion,
+.composer {
+  border-color: var(--ink);
+  border-radius: 0.45rem;
+}
+
+.suggestion:hover {
+  background: var(--accent-soft);
+  border-color: var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.composer {
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.ghost-btn,
+.library-link {
+  border-radius: 0.35rem;
+  border-color: var(--ink);
+}
+
+.library-glyph {
+  border-radius: 0.3rem;
+  background: var(--accent);
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
