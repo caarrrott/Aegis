@@ -17,8 +17,8 @@ export function ShieldMark({ size = 20, className }: IconProps) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path d="M12 3.5 19 6v5.2c0 4.5-2.8 7.8-7 9.3-4.2-1.5-7-4.8-7-9.3V6l7-2.5Z" />
-      <path d="m8.8 15.5 3.2-7 3.2 7M10 13.2h4" />
+      <path d="M5 18 10.1 6h3.8L19 18M7.2 13.2h9.6" />
+      <path d="M5 6h3M16 6h3" />
     </svg>
   );
 }
