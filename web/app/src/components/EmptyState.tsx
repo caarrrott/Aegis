@@ -4,21 +4,20 @@ import { ArrowRightIcon, ShieldMark } from "./Icons";
 interface EmptyStateProps {
   persona: Persona;
   onPick: (question: string) => void;
-  onOpenLibrary: () => void;
 }
 
-export function EmptyState({ persona, onPick, onOpenLibrary }: EmptyStateProps) {
+export function EmptyState({ persona, onPick }: EmptyStateProps) {
   return (
     <div className="empty">
       <div className="crest" aria-hidden="true">
         <ShieldMark size={26} />
       </div>
-      <p className="eyebrow">Confidential by design</p>
+      <p className="eyebrow">Aegis policy assistant</p>
       <h2 className="empty-title">
-        Ask the <em>policies.</em>
+        How can I <em>help</em> today?
       </h2>
       <p className="empty-lede">
-        Every answer quotes the exact sentence it came from — drawn only from
+        Ask a question about your company policies. Aegis answers from the
         documents {persona.name} is allowed to read.
       </p>
 
@@ -39,15 +38,6 @@ export function EmptyState({ persona, onPick, onOpenLibrary }: EmptyStateProps) 
         ))}
       </div>
 
-      <p className="empty-foot">
-        Signed in as <strong>{persona.name}</strong>
-        <span className="dot" aria-hidden="true" />
-        {persona.role}
-        <span className="dot" aria-hidden="true" />
-        <button type="button" className="text-btn" onClick={onOpenLibrary}>
-          Browse the library
-        </button>
-      </p>
     </div>
   );
 }

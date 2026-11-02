@@ -2247,6 +2247,126 @@ kbd {
   }
 }
 
+/* Minimal chat workspace refinements */
+.sidebar {
+  width: 16.5rem;
+  background: var(--sidebar-1);
+}
+
+.sidebar-scroll {
+  gap: 2.2rem;
+  padding: 1.25rem 0.85rem 0.5rem;
+}
+
+.brand-mark {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.brand-name {
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.brand-sub,
+.scope,
+.status-line,
+.theme-toggle,
+.health {
+  display: none;
+}
+
+.sidebar-foot {
+  padding: 0.75rem 0.85rem 1rem;
+}
+
+.topbar {
+  min-height: 4rem;
+  padding: 0.85rem clamp(1.25rem, 4vw, 2.7rem);
+}
+
+.topbar-copy .label {
+  display: none;
+}
+
+.topbar-title {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.topbar-title span {
+  font-style: normal;
+  color: var(--muted);
+}
+
+.thread {
+  padding-top: 2.75rem;
+}
+
+.thread-inner {
+  max-width: 48rem;
+  gap: 2.25rem;
+}
+
+.empty-title {
+  font-family: var(--sans);
+  font-size: clamp(2rem, 4vw, 2.65rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+}
+
+.empty-title em {
+  font-style: normal;
+}
+
+.empty-lede {
+  font-size: 0.86rem;
+}
+
+.crest {
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: 1.15rem;
+  border: 0;
+  background: var(--accent-soft);
+  box-shadow: none;
+}
+
+.suggestions {
+  max-width: 36rem;
+  margin-top: 1.75rem;
+}
+
+.suggestion {
+  grid-template-columns: 1fr auto;
+  padding: 0.85rem 1rem;
+  border-radius: 0.65rem;
+  background: transparent;
+}
+
+.suggestion-index {
+  display: none;
+}
+
+.composer-wrap {
+  padding-bottom: 1rem;
+}
+
+.composer {
+  max-width: 48rem;
+  border-radius: 0.9rem;
+  box-shadow: 0 8px 30px -24px rgba(28, 27, 23, 0.5);
+}
+
+.composer-hint {
+  max-width: 48rem;
+  justify-content: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

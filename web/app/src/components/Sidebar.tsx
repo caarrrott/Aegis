@@ -11,12 +11,6 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const SCOPE_LABELS: Record<(typeof VISIBILITY_ORDER)[number], string> = {
-  public: "Public",
-  internal: "Internal",
-  restricted: "Restricted",
-};
-
 export function Sidebar({
   activeId,
   onSelect,
@@ -26,8 +20,6 @@ export function Sidebar({
   open,
   onClose,
 }: SidebarProps) {
-  const active = PERSONAS.find((persona) => persona.id === activeId) ?? PERSONAS[0];
-
   return (
     <aside className={`sidebar${open ? " is-open" : ""}`} aria-label="Workspace">
       <div className="sidebar-scroll">
@@ -63,30 +55,6 @@ export function Sidebar({
           </div>
         </section>
 
-        <section className="scope" aria-label="Access scope">
-          <div className="scope-head">
-            <p className="label">Access scope</p>
-            <ShieldMark size={13} className="scope-mark" />
-          </div>
-          <p className="scope-blurb">{active.blurb}</p>
-          <ul className="scope-list">
-            {VISIBILITY_ORDER.map((level) => {
-              const allowed = active.access.includes(level);
-              const state =
-                level === "restricted" && allowed
-                  ? "Own dept"
-                  : allowed
-                    ? "Allowed"
-                    : "Blocked";
-              return (
-                <li key={level} className={allowed ? "is-allowed" : "is-blocked"}>
-                  <span className="scope-level">{SCOPE_LABELS[level]}</span>
-                  <span className="scope-state">{state}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
       </div>
 
       <div className="sidebar-foot">

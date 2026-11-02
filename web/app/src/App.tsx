@@ -418,11 +418,7 @@ export default function App() {
         <div className="thread" role="log" aria-live="polite">
           <div className={`thread-inner${messages.length === 0 ? " is-empty" : ""}`}>
             {messages.length === 0 ? (
-              <EmptyState
-                persona={persona}
-                onPick={pickSuggestion}
-                onOpenLibrary={openLibrary}
-              />
+              <EmptyState persona={persona} onPick={pickSuggestion} />
             ) : (
               messages.map((message) => (
                 <MessageView
