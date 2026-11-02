@@ -1523,14 +1523,6 @@ p {
     background 0.2s var(--ease);
 }
 
-.composer:focus-within {
-  border-color: var(--accent-focus);
-  background: var(--surface-raised);
-  box-shadow:
-    0 0 0 3px var(--focus-wash),
-    0 20px 44px -34px rgba(28, 27, 23, 0.5);
-}
-
 .composer-input {
   flex: 1;
   min-height: 1.55rem;
