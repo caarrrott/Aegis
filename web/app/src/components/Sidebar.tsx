@@ -1,4 +1,4 @@
-import { PERSONAS, VISIBILITY_ORDER, type Persona } from "../lib/personas";
+import { PERSONAS, type Persona, VISIBILITY_ORDER } from "../lib/personas";
 import { ArrowRightIcon, CloseIcon, DocIcon, ShieldMark } from "./Icons";
 
 interface SidebarProps {
