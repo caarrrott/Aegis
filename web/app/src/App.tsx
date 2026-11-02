@@ -325,8 +325,10 @@ export default function App() {
             <button
               type="button"
               className="icon-btn menu-btn only-mobile"
-              onClick={() => setNavOpen(true)}
-              aria-label="Open menu"
+              onClick={() => setNavOpen((current) => !current)}
+              aria-expanded={navOpen}
+              aria-controls="workspace-sidebar"
+              aria-label={navOpen ? "Close menu" : "Open menu"}
             >
               <MenuIcon />
             </button>

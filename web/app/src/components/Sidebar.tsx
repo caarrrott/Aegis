@@ -16,7 +16,11 @@ export function Sidebar({
   onClose,
 }: SidebarProps) {
   return (
-    <aside className={`sidebar${open ? " is-open" : ""}`} aria-label="Workspace">
+    <aside
+      id="workspace-sidebar"
+      className={`sidebar${open ? " is-open" : ""}`}
+      aria-label="Workspace"
+    >
       <div className="sidebar-scroll">
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">

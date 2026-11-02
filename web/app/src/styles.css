@@ -2158,6 +2158,11 @@ kbd {
     display: inline-flex;
   }
 
+  .menu-btn {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
   .topbar {
     padding: 0.85rem 1.1rem;
   }
@@ -2176,6 +2181,10 @@ kbd {
 }
 
 @media (max-width: 560px) {
+  .topbar-actions .ghost-btn {
+    display: none;
+  }
+
   .ghost-label {
     display: none;
   }
@@ -2232,11 +2241,26 @@ kbd {
   }
 
   .empty-lede {
-    font-size: 0.86rem;
+    display: none;
+  }
+
+  .suggestions {
+    gap: 0.3rem;
+    margin-top: 0.8rem;
+  }
+
+  .suggestion {
+    min-height: 2.25rem;
+    padding: 0.42rem 0.55rem;
   }
 
   .suggestion-text {
-    font-size: 0.83rem;
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
   }
 }
 
