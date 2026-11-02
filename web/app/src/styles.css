@@ -11,23 +11,23 @@
   color-scheme: light;
 
   /* Surfaces */
-  --paper: #f7f5f0;
-  --paper-deep: #f0ece3;
-  --paper-glow: #fbf9f5;
-  --surface: #fcfbf8;
+  --paper: #f3f4f1;
+  --paper-deep: #e8ebe6;
+  --paper-glow: #fbfcfa;
+  --surface: #f8faf7;
   --surface-raised: #ffffff;
-  --sidebar-1: #f4f1ea;
-  --sidebar-2: #f1eee6;
-  --topbar-bg: rgba(248, 246, 241, 0.78);
+  --sidebar-1: #ecefea;
+  --sidebar-2: #e7ebe6;
+  --topbar-bg: rgba(243, 244, 241, 0.82);
 
   /* Text */
-  --ink: #1c1b17;
-  --ink-soft: #3f3d36;
-  --muted: #635e54;
-  --faint: #756f62;
-  --placeholder: #8a8476;
-  --quote-ink: #5f5a4e;
-  --trace-ink: #5c574c;
+  --ink: #111614;
+  --ink-soft: #34403a;
+  --muted: #64716a;
+  --faint: #849089;
+  --placeholder: #9aa49e;
+  --quote-ink: #59665f;
+  --trace-ink: #627068;
 
   /* Fills that whisper (translucent white washes over paper) */
   --wash: rgba(255, 255, 255, 0.42);
@@ -36,21 +36,21 @@
   --scrim: rgba(27, 26, 22, 0.3);
 
   /* Lines */
-  --line: #e4dfd4;
-  --line-strong: #d3ccbd;
-  --line-hover: #c3bbab;
+  --line: #dce3dd;
+  --line-strong: #c8d2ca;
+  --line-hover: #aebdb2;
 
   /* Accent */
-  --accent: #2c4536;
-  --accent-strong: #223629;
-  --accent-soft: #e8ede6;
-  --on-accent: #f4f0e6;
-  --accent-line: rgba(44, 69, 54, 0.16);
-  --accent-focus: rgba(44, 69, 54, 0.45);
-  --focus-ring: rgba(44, 69, 54, 0.5);
-  --focus-wash: rgba(44, 69, 54, 0.07);
-  --selection: rgba(44, 69, 54, 0.16);
-  --underline: rgba(44, 69, 54, 0.35);
+  --accent: #0e5b47;
+  --accent-strong: #083d30;
+  --accent-soft: #dcece5;
+  --on-accent: #f5faf7;
+  --accent-line: rgba(14, 91, 71, 0.18);
+  --accent-focus: rgba(14, 91, 71, 0.42);
+  --focus-ring: rgba(14, 91, 71, 0.5);
+  --focus-wash: rgba(14, 91, 71, 0.07);
+  --selection: rgba(14, 91, 71, 0.16);
+  --underline: rgba(14, 91, 71, 0.35);
 
   /* Amber caution */
   --amber: #8a5f1c;
@@ -82,28 +82,27 @@
   --stop-hover: #e8e2d5;
   --noise: 0.028;
 
-  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+  --sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     sans-serif;
-  --serif: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman",
-    serif;
+  --serif: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
-  --radius: 14px;
-  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --radius: 10px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
 
   /* Surfaces */
-  --paper: #15181a;
-  --paper-deep: #1d2223;
-  --paper-glow: #181c1d;
-  --surface: #1a1e1f;
-  --surface-raised: #212626;
-  --sidebar-1: #171b1c;
-  --sidebar-2: #141819;
-  --topbar-bg: rgba(21, 24, 26, 0.74);
+  --paper: #101514;
+  --paper-deep: #17201d;
+  --paper-glow: #14201c;
+  --surface: #141b18;
+  --surface-raised: #1b2521;
+  --sidebar-1: #0d1211;
+  --sidebar-2: #0a0f0e;
+  --topbar-bg: rgba(16, 21, 20, 0.78);
 
   /* Text */
   --ink: #ece8dd;
@@ -126,16 +125,16 @@
   --line-hover: #4a514e;
 
   /* Accent — chalky moss that stays legible on charcoal */
-  --accent: #84b392;
-  --accent-strong: #9cc6a8;
-  --accent-soft: #24352a;
-  --on-accent: #12241a;
-  --accent-line: rgba(132, 179, 146, 0.28);
-  --accent-focus: rgba(132, 179, 146, 0.5);
-  --focus-ring: rgba(132, 179, 146, 0.55);
-  --focus-wash: rgba(132, 179, 146, 0.08);
-  --selection: rgba(132, 179, 146, 0.28);
-  --underline: rgba(132, 179, 146, 0.38);
+  --accent: #8dd9b4;
+  --accent-strong: #b0ebcc;
+  --accent-soft: #19372b;
+  --on-accent: #0b1b14;
+  --accent-line: rgba(141, 217, 180, 0.28);
+  --accent-focus: rgba(141, 217, 180, 0.5);
+  --focus-ring: rgba(141, 217, 180, 0.55);
+  --focus-wash: rgba(141, 217, 180, 0.08);
+  --selection: rgba(141, 217, 180, 0.28);
+  --underline: rgba(141, 217, 180, 0.38);
 
   /* Amber caution */
   --amber: #d9ad68;
@@ -393,7 +392,7 @@ p {
   place-items: center;
   width: 2.55rem;
   height: 2.55rem;
-  border-radius: 50%;
+  border-radius: 0.65rem;
   background: var(--accent);
   color: var(--on-accent);
   box-shadow:
