@@ -14,17 +14,17 @@ export interface Persona {
 
 export const PERSONAS: Persona[] = [
   {
-    id: "alice",
-    name: "Alice",
-    role: "Engineering",
-    initials: "AL",
-    location: "Engineering · Staff",
+    id: "workspace",
+    name: "Workspace member",
+    role: "Company workspace",
+    initials: "WM",
+    location: "Your company workspace",
     access: ["public", "internal", "restricted"],
-    blurb: "Public and internal documents, plus engineering-restricted policies.",
+    blurb: "Answers from the documents and policies available in your workspace.",
     suggestions: [
-      "What does error code E-1042 mean?",
-      "Summarise the security policy.",
-      "Who can approve production access?",
+      "What are the most important company policies?",
+      "Summarise the latest policy updates.",
+      "Who can approve this request?", 
     ],
   },
   {

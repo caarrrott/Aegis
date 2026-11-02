@@ -299,11 +299,6 @@ export default function App() {
     [loadDocuments],
   );
 
-  const selectPersona = useCallback((id: string) => {
-    setActiveId(id);
-    setNavOpen(false);
-  }, []);
-
   const hasMessages = messages.length > 0;
 
   return (
@@ -315,8 +310,6 @@ export default function App() {
       />
 
       <Sidebar
-        activeId={activeId}
-        onSelect={selectPersona}
         online={online}
         documentCount={
           documentsLoading && documents.length === 0 ? null : documents.length
@@ -338,9 +331,9 @@ export default function App() {
               <MenuIcon />
             </button>
             <div className="topbar-copy">
-              <p className="label">Policy desk</p>
+              <p className="label">Company workspace</p>
               <h1 className="topbar-title">
-                Answering as <span>{persona.name}</span>
+                Policy assistant
               </h1>
             </div>
           </div>

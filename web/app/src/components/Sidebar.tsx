@@ -1,9 +1,6 @@
-import { PERSONAS, type Persona, VISIBILITY_ORDER } from "../lib/personas";
 import { ArrowRightIcon, CloseIcon, DocIcon, ShieldMark } from "./Icons";
 
 interface SidebarProps {
-  activeId: string;
-  onSelect: (id: string) => void;
   online: boolean | null;
   documentCount: number | null;
   onOpenLibrary: () => void;
@@ -12,8 +9,6 @@ interface SidebarProps {
 }
 
 export function Sidebar({
-  activeId,
-  onSelect,
   online,
   documentCount,
   onOpenLibrary,
@@ -40,20 +35,6 @@ export function Sidebar({
             <CloseIcon />
           </button>
         </div>
-
-        <section className="side-section">
-          <p className="label">Answering as</p>
-          <div className="persona-list" role="group" aria-label="Demo users">
-            {PERSONAS.map((persona) => (
-              <PersonaOption
-                key={persona.id}
-                persona={persona}
-                selected={persona.id === activeId}
-                onSelect={onSelect}
-              />
-            ))}
-          </div>
-        </section>
 
       </div>
 
@@ -90,46 +71,5 @@ export function Sidebar({
         </div>
       </div>
     </aside>
-  );
-}
-
-function PersonaOption({
-  persona,
-  selected,
-  onSelect,
-}: {
-  persona: Persona;
-  selected: boolean;
-  onSelect: (id: string) => void;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={selected}
-      className={`persona${selected ? " is-selected" : ""}`}
-      onClick={() => onSelect(persona.id)}
-    >
-      <span
-        className={`monogram${persona.id === "guest" ? " is-guest" : ""}`}
-        aria-hidden="true"
-      >
-        {persona.initials}
-      </span>
-      <span className="persona-text">
-        <span className="persona-name">{persona.name}</span>
-        <span className="persona-role">{persona.location}</span>
-      </span>
-      <span
-        className="meter"
-        aria-label={`Can read ${persona.access.join(", ")} documents`}
-      >
-        {VISIBILITY_ORDER.map((level) => (
-          <i
-            key={level}
-            className={persona.access.includes(level) ? "is-on" : undefined}
-          />
-        ))}
-      </span>
-    </button>
   );
 }

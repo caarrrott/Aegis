@@ -18,7 +18,7 @@ export function EmptyState({ persona, onPick }: EmptyStateProps) {
       </h2>
       <p className="empty-lede">
         Ask a question about your company policies. Aegis answers from the
-        documents {persona.name} is allowed to read.
+        documents available in your workspace.
       </p>
 
       <div className="suggestions" aria-label="Suggested questions">
