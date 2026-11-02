@@ -17,10 +17,8 @@ export function ShieldMark({ size = 20, className }: IconProps) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <rect x="4" y="4" width="7" height="7" rx="1.2" fill="currentColor" stroke="none" />
-      <rect x="13" y="4" width="7" height="7" rx="1.2" fill="currentColor" stroke="none" opacity="0.7" />
-      <rect x="4" y="13" width="7" height="7" rx="1.2" fill="currentColor" stroke="none" opacity="0.7" />
-      <rect x="13" y="13" width="7" height="7" rx="1.2" fill="currentColor" stroke="none" />
+      <path d="M12 3.5 19 6v5.2c0 4.5-2.8 7.8-7 9.3-4.2-1.5-7-4.8-7-9.3V6l7-2.5Z" />
+      <path d="m8.8 15.5 3.2-7 3.2 7M10 13.2h4" />
     </svg>
   );
 }

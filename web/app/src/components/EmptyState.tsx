@@ -14,7 +14,7 @@ export function EmptyState({ persona, onPick }: EmptyStateProps) {
       </div>
       <p className="eyebrow">Aegis</p>
       <h2 className="empty-title">
-        How can I <em>help</em> today?
+        How can I <em>help</em> you today?
       </h2>
       <p className="empty-lede">
         Ask a question about your company policies. Aegis answers from the

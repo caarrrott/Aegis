@@ -288,9 +288,9 @@ p {
 }
 
 .eyebrow {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -2383,10 +2383,10 @@ kbd {
   --faint: #858177;
   --line: #c9c5ba;
   --line-strong: #9d998e;
-  --accent: #e9bd21;
-  --accent-strong: #c99d08;
-  --accent-soft: #fff0a9;
-  --on-accent: #171716;
+  --accent: #3b5ccc;
+  --accent-strong: #2f4bb0;
+  --accent-soft: #e7ebff;
+  --on-accent: #ffffff;
   --sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --serif: "Space Grotesk", "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --radius: 0.45rem;
@@ -2406,10 +2406,10 @@ kbd {
   --faint: #77746b;
   --line: #454640;
   --line-strong: #73746b;
-  --accent: #f3c933;
-  --accent-strong: #ffdb5b;
-  --accent-soft: #443a13;
-  --on-accent: #171716;
+  --accent: #8ea7ff;
+  --accent-strong: #b4c4ff;
+  --accent-soft: #202b55;
+  --on-accent: #111211;
 }
 
 body {
@@ -2446,8 +2446,8 @@ body {
 }
 
 .empty-title {
-  font-size: clamp(2.25rem, 5vw, 3.8rem);
-  line-height: 0.94;
+  font-size: clamp(2.7rem, 6vw, 4.6rem);
+  line-height: 0.98;
 }
 
 .empty-title em {
@@ -2492,6 +2492,58 @@ body {
   border-radius: 0.3rem;
   background: var(--accent);
   color: var(--ink);
+}
+
+@media (max-height: 600px) {
+  .thread {
+    padding-top: 1rem;
+  }
+
+  .thread-inner.is-empty {
+    justify-content: flex-start;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .crest {
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .empty-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+  }
+
+  .empty-lede {
+    margin-top: 0.45rem;
+    font-size: 0.78rem;
+  }
+
+  .suggestions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+    margin-top: 0.75rem;
+  }
+
+  .suggestion {
+    min-height: 2.7rem;
+    padding: 0.48rem 0.62rem;
+  }
+
+  .suggestion-text {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .suggestion-arrow {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
