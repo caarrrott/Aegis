@@ -46,9 +46,9 @@
   --accent-soft: #dcece5;
   --on-accent: #f5faf7;
   --accent-line: rgba(14, 91, 71, 0.18);
-  --accent-focus: rgba(14, 91, 71, 0.42);
-  --focus-ring: rgba(14, 91, 71, 0.5);
-  --focus-wash: rgba(14, 91, 71, 0.07);
+  --accent-focus: rgba(84, 113, 210, 0.5);
+  --focus-ring: rgba(84, 113, 210, 0.68);
+  --focus-wash: rgba(84, 113, 210, 0.1);
   --selection: rgba(14, 91, 71, 0.16);
   --underline: rgba(14, 91, 71, 0.35);
 
@@ -130,9 +130,9 @@
   --accent-soft: #19372b;
   --on-accent: #0b1b14;
   --accent-line: rgba(141, 217, 180, 0.28);
-  --accent-focus: rgba(141, 217, 180, 0.5);
-  --focus-ring: rgba(141, 217, 180, 0.55);
-  --focus-wash: rgba(141, 217, 180, 0.08);
+  --accent-focus: rgba(132, 153, 239, 0.65);
+  --focus-ring: rgba(132, 153, 239, 0.75);
+  --focus-wash: rgba(132, 153, 239, 0.12);
   --selection: rgba(141, 217, 180, 0.28);
   --underline: rgba(141, 217, 180, 0.38);
 
