@@ -324,7 +324,7 @@ export default function App() {
           <div className="topbar-side">
             <button
               type="button"
-              className="icon-btn menu-btn only-mobile"
+              className="icon-btn menu-btn"
               onClick={() => setNavOpen((current) => !current)}
               aria-expanded={navOpen}
               aria-controls="workspace-sidebar"
