@@ -2816,22 +2816,58 @@ body {
     padding-bottom: 1rem;
   }
 
-  .crest,
-  .eyebrow,
+  .empty {
+    transform: translateY(-2rem);
+  }
+
+  .crest {
+    display: grid;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.72rem;
+  }
+
   .empty-lede {
     display: none;
   }
 
   .empty-title {
-    font-size: clamp(2rem, 7vw, 3rem);
+    font-size: clamp(2.1rem, 6vw, 3.4rem);
   }
 
   .suggestions {
-    margin-top: 1rem;
+    display: none;
   }
 
   .suggestion:nth-child(n + 3) {
-    display: none;
+    display: flex;
+  }
+
+  .suggestion {
+    min-height: 2.7rem;
+    padding: 0.55rem 0.7rem;
+  }
+
+  .suggestion-text {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  @media (max-width: 699px) {
+    .suggestions {
+      grid-template-columns: 1fr;
+    }
+
+    .suggestion:nth-child(n + 3) {
+      display: none;
+    }
   }
 }
 
