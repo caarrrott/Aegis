@@ -2287,13 +2287,12 @@ kbd {
   letter-spacing: -0.02em;
 }
 
-.brand-sub,
-.scope,
-.status-line,
-.theme-toggle,
-.health {
-  display: none;
-}
+  .brand-sub,
+  .scope,
+  .status-line,
+  .health {
+    display: none;
+  }
 
 .sidebar-foot {
   padding: 0.75rem 0.85rem 1rem;
