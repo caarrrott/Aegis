@@ -299,11 +299,6 @@ export default function App() {
     [loadDocuments],
   );
 
-  const selectPersona = useCallback((id: string) => {
-    setActiveId(id);
-    setNavOpen(false);
-  }, []);
-
   const hasMessages = messages.length > 0;
 
   return (
@@ -315,8 +310,6 @@ export default function App() {
       />
 
       <Sidebar
-        activeId={activeId}
-        onSelect={selectPersona}
         online={online}
         documentCount={
           documentsLoading && documents.length === 0 ? null : documents.length
@@ -332,15 +325,17 @@ export default function App() {
             <button
               type="button"
               className="icon-btn menu-btn only-mobile"
-              onClick={() => setNavOpen(true)}
-              aria-label="Open menu"
+              onClick={() => setNavOpen((current) => !current)}
+              aria-expanded={navOpen}
+              aria-controls="workspace-sidebar"
+              aria-label={navOpen ? "Close menu" : "Open menu"}
             >
               <MenuIcon />
             </button>
             <div className="topbar-copy">
-              <p className="label">Policy desk</p>
+              <p className="label">Company workspace</p>
               <h1 className="topbar-title">
-                Answering as <span>{persona.name}</span>
+                Aegis
               </h1>
             </div>
           </div>
@@ -418,11 +413,7 @@ export default function App() {
         <div className="thread" role="log" aria-live="polite">
           <div className={`thread-inner${messages.length === 0 ? " is-empty" : ""}`}>
             {messages.length === 0 ? (
-              <EmptyState
-                persona={persona}
-                onPick={pickSuggestion}
-                onOpenLibrary={openLibrary}
-              />
+              <EmptyState persona={persona} onPick={pickSuggestion} />
             ) : (
               messages.map((message) => (
                 <MessageView

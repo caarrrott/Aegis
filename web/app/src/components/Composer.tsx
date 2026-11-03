@@ -80,7 +80,7 @@ export function Composer({
 
       <div className="composer-hint">
         <span>
-          Answering as <strong>{persona.name}</strong>
+          Workspace context: <strong>{persona.name}</strong>
           <span className="dot" aria-hidden="true" />
           {persona.role}
         </span>

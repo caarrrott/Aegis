@@ -1,9 +1,6 @@
-import { PERSONAS, VISIBILITY_ORDER, type Persona } from "../lib/personas";
 import { ArrowRightIcon, CloseIcon, DocIcon, ShieldMark } from "./Icons";
 
 interface SidebarProps {
-  activeId: string;
-  onSelect: (id: string) => void;
   online: boolean | null;
   documentCount: number | null;
   onOpenLibrary: () => void;
@@ -11,25 +8,19 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const SCOPE_LABELS: Record<(typeof VISIBILITY_ORDER)[number], string> = {
-  public: "Public",
-  internal: "Internal",
-  restricted: "Restricted",
-};
-
 export function Sidebar({
-  activeId,
-  onSelect,
   online,
   documentCount,
   onOpenLibrary,
   open,
   onClose,
 }: SidebarProps) {
-  const active = PERSONAS.find((persona) => persona.id === activeId) ?? PERSONAS[0];
-
   return (
-    <aside className={`sidebar${open ? " is-open" : ""}`} aria-label="Workspace">
+    <aside
+      id="workspace-sidebar"
+      className={`sidebar${open ? " is-open" : ""}`}
+      aria-label="Workspace"
+    >
       <div className="sidebar-scroll">
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">
@@ -37,7 +28,7 @@ export function Sidebar({
           </span>
           <span className="brand-text">
             <span className="brand-name">Aegis</span>
-            <span className="brand-sub">Policy intelligence</span>
+            <span className="brand-sub">Workspace intelligence</span>
           </span>
           <button
             type="button"
@@ -49,44 +40,6 @@ export function Sidebar({
           </button>
         </div>
 
-        <section className="side-section">
-          <p className="label">Answering as</p>
-          <div className="persona-list" role="group" aria-label="Demo users">
-            {PERSONAS.map((persona) => (
-              <PersonaOption
-                key={persona.id}
-                persona={persona}
-                selected={persona.id === activeId}
-                onSelect={onSelect}
-              />
-            ))}
-          </div>
-        </section>
-
-        <section className="scope" aria-label="Access scope">
-          <div className="scope-head">
-            <p className="label">Access scope</p>
-            <ShieldMark size={13} className="scope-mark" />
-          </div>
-          <p className="scope-blurb">{active.blurb}</p>
-          <ul className="scope-list">
-            {VISIBILITY_ORDER.map((level) => {
-              const allowed = active.access.includes(level);
-              const state =
-                level === "restricted" && allowed
-                  ? "Own dept"
-                  : allowed
-                    ? "Allowed"
-                    : "Blocked";
-              return (
-                <li key={level} className={allowed ? "is-allowed" : "is-blocked"}>
-                  <span className="scope-level">{SCOPE_LABELS[level]}</span>
-                  <span className="scope-state">{state}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
       </div>
 
       <div className="sidebar-foot">
@@ -122,46 +75,5 @@ export function Sidebar({
         </div>
       </div>
     </aside>
-  );
-}
-
-function PersonaOption({
-  persona,
-  selected,
-  onSelect,
-}: {
-  persona: Persona;
-  selected: boolean;
-  onSelect: (id: string) => void;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={selected}
-      className={`persona${selected ? " is-selected" : ""}`}
-      onClick={() => onSelect(persona.id)}
-    >
-      <span
-        className={`monogram${persona.id === "guest" ? " is-guest" : ""}`}
-        aria-hidden="true"
-      >
-        {persona.initials}
-      </span>
-      <span className="persona-text">
-        <span className="persona-name">{persona.name}</span>
-        <span className="persona-role">{persona.location}</span>
-      </span>
-      <span
-        className="meter"
-        aria-label={`Can read ${persona.access.join(", ")} documents`}
-      >
-        {VISIBILITY_ORDER.map((level) => (
-          <i
-            key={level}
-            className={persona.access.includes(level) ? "is-on" : undefined}
-          />
-        ))}
-      </span>
-    </button>
   );
 }
