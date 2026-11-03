@@ -2287,13 +2287,12 @@ kbd {
   letter-spacing: -0.02em;
 }
 
-.brand-sub,
-.scope,
-.status-line,
-.theme-toggle,
-.health {
-  display: none;
-}
+  .brand-sub,
+  .scope,
+  .status-line,
+  .health {
+    display: none;
+  }
 
 .sidebar-foot {
   padding: 0.75rem 0.85rem 1rem;
@@ -2608,6 +2607,360 @@ body {
 
   .suggestion-arrow {
     display: none;
+  }
+}
+
+/* Aegis workspace composition: compact navigation, generous canvas, floating prompt. */
+.sidebar {
+  width: min(18rem, 84vw);
+  background: var(--sidebar-1);
+  border-right-color: color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.sidebar-scroll {
+  gap: 2.25rem;
+  padding: 1.15rem 0.8rem 1rem;
+}
+
+.brand {
+  padding: 0.25rem 0.35rem 0.75rem;
+}
+
+.brand-name {
+  font-family: var(--sans);
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.brand-sub {
+  display: block;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.sidebar-nav-label {
+  padding: 0 0.65rem;
+  color: var(--faint);
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.7rem 0.72rem;
+  border: 1px solid transparent;
+  border-radius: 0.8rem;
+  background: transparent;
+  text-align: left;
+  color: var(--ink-soft);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item.is-active {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.sidebar-nav-icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.58rem;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.sidebar-nav-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.sidebar-nav-copy small {
+  margin-top: 0.12rem;
+  color: var(--faint);
+  font-size: 0.66rem;
+  font-weight: 400;
+}
+
+.sidebar-foot {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.topbar {
+  min-height: 4.15rem;
+  padding-inline: clamp(1.25rem, 5vw, 4rem);
+  border-bottom-color: color-mix(in srgb, var(--line) 65%, transparent);
+}
+
+.topbar-copy .label {
+  display: none;
+}
+
+.topbar-title {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+.thread {
+  padding: 2rem clamp(1.25rem, 6vw, 6rem) 1.25rem;
+}
+
+.thread-inner {
+  max-width: 52rem;
+}
+
+.thread-inner.is-empty {
+  justify-content: center;
+  padding-bottom: 6rem;
+}
+
+.empty {
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.crest {
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: 1rem;
+}
+
+.empty-title {
+  max-width: 42rem;
+  margin-inline: auto;
+  font-size: clamp(2.4rem, 5.4vw, 4.3rem);
+  line-height: 1.02;
+}
+
+.empty-lede {
+  max-width: 34rem;
+  margin-top: 0.85rem;
+}
+
+.suggestions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  max-width: 48rem;
+  margin-top: 1.7rem;
+}
+
+.suggestion {
+  min-height: 5.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+
+.composer-wrap {
+  padding: 0 1.25rem 1.15rem;
+}
+
+.composer {
+  max-width: 58rem;
+  min-height: 4rem;
+  padding: 0.7rem 0.75rem 0.7rem 1.2rem;
+  border-radius: 1.2rem;
+  background: var(--surface-raised);
+  box-shadow: 0 18px 48px -30px rgba(0, 0, 0, 0.65);
+}
+
+.composer-hint {
+  max-width: 58rem;
+  padding-top: 0.6rem;
+}
+
+@media (max-width: 960px) {
+  .topbar {
+    padding-inline: 1rem;
+  }
+
+  .thread-inner.is-empty {
+    padding-bottom: 3rem;
+  }
+
+  .suggestions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .suggestion {
+    min-height: 3rem;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .suggestion-text {
+    display: -webkit-box;
+    overflow: hidden;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .crest {
+    display: grid;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.72rem;
+  }
+
+  .empty-lede {
+    display: none;
+  }
+
+  .empty-title {
+    font-size: clamp(2.1rem, 6vw, 3.4rem);
+  }
+
+  .suggestions {
+    display: grid;
+  }
+
+  .suggestion:nth-child(n + 3) {
+    display: flex;
+  }
+
+  .suggestion {
+    min-height: 2.7rem;
+    padding: 0.55rem 0.7rem;
+  }
+
+  .suggestion-text {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  @media (max-width: 699px) {
+    .suggestions {
+      grid-template-columns: 1fr;
+    }
+
+    .suggestion:nth-child(n + 3) {
+      display: none;
+    }
+  }
+}
+
+@media (max-height: 600px) {
+  .composer-wrap {
+    padding-bottom: 0.5rem;
+  }
+
+  .composer-hint {
+    display: none;
+  }
+
+  .empty {
+    transform: translateY(-1.25rem);
+  }
+}
+
+@media (max-width: 960px) {
+  .thread-inner.is-empty {
+    justify-content: flex-start;
+    padding-top: 1.25rem;
+    padding-bottom: 1rem;
+  }
+
+  .empty {
+    transform: none;
+  }
+
+  .crest {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+  }
+
+  .empty-title {
+    max-width: 42rem;
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    line-height: 1.02;
+  }
+
+  .empty-lede {
+    display: block;
+    max-width: 31rem;
+    margin-top: 0.55rem;
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .suggestions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+    margin-top: 0.9rem;
+  }
+
+  .suggestion {
+    min-height: 3.15rem;
+    padding: 0.65rem 0.7rem;
+  }
+
+  .suggestion-text {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .composer-wrap {
+    padding-bottom: 0.5rem;
+  }
+
+  .composer-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 699px) {
+  .empty-title {
+    font-size: clamp(2rem, 10vw, 2.65rem);
+  }
+
+  .empty-lede {
+    font-size: 0.75rem;
+  }
+
+  .suggestions {
+    grid-template-columns: 1fr;
   }
 }
 

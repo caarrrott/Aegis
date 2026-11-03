@@ -1,4 +1,4 @@
-import { ArrowRightIcon, CloseIcon, DocIcon, ShieldMark } from "./Icons";
+import { CloseIcon, DocIcon, ShieldMark } from "./Icons";
 
 interface SidebarProps {
   online: boolean | null;
@@ -40,24 +40,29 @@ export function Sidebar({
           </button>
         </div>
 
+        <nav className="sidebar-nav" aria-label="Workspace navigation">
+          <p className="sidebar-nav-label">Workspace</p>
+          <button
+            type="button"
+            className="sidebar-nav-item is-active"
+            onClick={onOpenLibrary}
+          >
+            <span className="sidebar-nav-icon" aria-hidden="true">
+              <DocIcon size={16} />
+            </span>
+            <span className="sidebar-nav-copy">
+              <span>Policy library</span>
+              <small>
+                {documentCount === null
+                  ? "Loading documents"
+                  : `${documentCount} indexed`}
+              </small>
+            </span>
+          </button>
+        </nav>
       </div>
 
       <div className="sidebar-foot">
-        <button type="button" className="library-link" onClick={onOpenLibrary}>
-          <span className="library-glyph" aria-hidden="true">
-            <DocIcon size={16} />
-          </span>
-          <span className="library-copy">
-            <span className="library-title">Policy library</span>
-            <span className="library-sub">
-              {documentCount === null
-                ? "Loading documents"
-                : `${documentCount} document${documentCount === 1 ? "" : "s"} indexed`}
-            </span>
-          </span>
-          <ArrowRightIcon size={15} className="library-arrow" />
-        </button>
-
         <div className="status-line" role="status">
           <span
             className={`status-dot${
