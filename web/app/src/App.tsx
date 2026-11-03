@@ -319,7 +319,7 @@ export default function App() {
         onClose={() => setNavOpen(false)}
       />
 
-      <main className="main">
+      <main className={navOpen ? "main main-sidebar-open" : "main"}>
         <header className="topbar">
           <div className="topbar-side">
             <button

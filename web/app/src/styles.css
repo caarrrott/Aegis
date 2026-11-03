@@ -2574,6 +2574,12 @@ body {
 }
 
 @media (min-width: 961px) {
+  .main-sidebar-open {
+    margin-left: min(20rem, 88vw);
+    width: calc(100% - min(20rem, 88vw));
+    transition: margin-left 0.3s var(--ease), width 0.3s var(--ease);
+  }
+
   .nav-scrim {
     display: block;
     position: fixed;
