@@ -1,9 +1,176 @@
-"""Document upload and indexing entry points (implementation to follow)."""
+"""
+Indexing one uploaded document.
+
+Nothing is indexed until somebody uploads it. There is no folder that gets
+scanned, because in a real company documents arrive one at a time, from people,
+with whatever file name they happened to have.
+
+So a document is identified by what it says, not by what it is called:
+
+    same text, any file name     already indexed, nothing to do, nothing to pay
+    same policy and version,
+    different text               an edit, so the old chunks are replaced
+    new policy or new version    indexed as a new document
+
+That is why the content hash is unique in the database and the file name is
+not. policy.md, policy-final.md and policy(2).md with the same text are one
+document.
+"""
+
+import hashlib
+from dataclasses import dataclass
+from datetime import datetime
+
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
+
+from assistant import config, repository
+from assistant.models import Chunk, SourceDocument
+
+REQUIRED_FIELDS = ("title", "department", "visibility", "version", "status", "effective", "updated")
+
+@dataclass
+class UploadResult:
+    """What happened to one uploaded file."""
+
+    filename: str
+    outcome: str # added, updated, duplicate
+    title: str = ""
+    version: int = 0
+    chunks: int = 0
+    detail: str = ""
+
+    def line(self) -> str:
+        if self.outcome == "duplicate":
+            return f"{self.filename}: already indexed as {self.detail}, skipped"
+        return (
+            f"{self.filename}: {self.outcome} as {self.title} v{self.version}, "
+            f"{self.chunks} chunks"
+        )
 
 
-def ingest_document(filename: str, content: bytes) -> None:
-    """Validate and index a policy document.
+class UploadError(ValueError):
+    """The file cannot be indexed, with a reason a person can act on."""
 
-    This starter deliberately does not persist or process uploads yet.
+
+def parse(text: str, filename: str) -> SourceDocument:
+    """Read the header block and the body out of an uploaded markdown file.
+
+    Line endings are normalised before anything else. A file saved on Windows
+    carries \r\n and the same file from a Mac carries \n, and without this
+    line those two would hash differently and be indexed twice.
     """
-    raise NotImplementedError("Document ingestion is not implemented yet")
+
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+    if not text.lstrip().startswith("---"):
+        raise UploadError("the file must start with a header block between --- markers")
+
+    _, header, body = text.split("---", 2)
+
+    fields = {}
+    for line in header.strip().splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        fields[key.strip()] = value.strip()
+
+    missing = [field for field in REQUIRED_FIELDS if field not in fields]
+    if missing:
+        raise UploadError("the header is missing: " + ", ".join(missing))
+
+    return SourceDocument(
+        source=filename,
+        title=fields["title"],
+        department=fields["department"],
+        visibility=fields["visibility"],
+        version=int(fields["version"]),
+        status=fields["status"],
+        effective_from=datetime.strptime(fields["effective"], "%Y-%m-%d").date(),
+        updated_on=datetime.strptime(fields["updated"], "%Y-%m-%d").date(),
+        content_hash=hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        body=body.strip(),
+    )
+
+
+def split(document: SourceDocument) -> list[Chunk]:
+    """Splits a document into chunks using a two-pass approach."""
+    
+    # LEVEL 1: Split the document based on Markdown headings
+    headers_to_split_on = [
+        ("#", "Header 1"),
+        ("##", "Header 2"),
+        ("###", "Header 3"),
+    ]
+    markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
+    header_splits = markdown_splitter.split_text(document.body)
+
+    # LEVEL 2: Ensure no chunk exceeds the maximum chunk size
+    character_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=config.CHUNK_SIZE, 
+        chunk_overlap=config.CHUNK_OVERLAP
+    )
+    final_splits = character_splitter.split_documents(header_splits)
+
+    # Convert the LangChain splits into custom Chunk dataclasses
+    chunks = []
+    for split_doc in final_splits:
+        section = (
+            split_doc.metadata.get("Header 3") or 
+            split_doc.metadata.get("Header 2") or 
+            split_doc.metadata.get("Header 1") or 
+            "General"
+        )
+        
+        chunks.append(Chunk(
+            section=section,
+            content=split_doc.page_content
+        ))
+        
+    return chunks
+
+
+def store(connection, text: str, filename: str) -> UploadResult:
+    """Index one uploaded file. The only way documents enter this system."""
+    document = parse(text, filename)
+
+    # Same text, under any name. Nothing to do, and nothing to pay for.
+    existing = repository.find_by_hash(connection, document.content_hash)
+    if existing:
+        return UploadResult(
+            filename=filename,
+            outcome="duplicate",
+            detail=f"{existing['title']} v{existing['version']} (from {existing['source']})",
+        )
+
+    # Same policy and version, different text. This is an edit, so the old
+    # chunks go and the new ones take their place.
+    replacing = repository.find_by_version(connection, document.title, document.version)
+    if replacing:
+        repository.delete_document(connection, replacing["id"])
+
+    chunks = split(document)
+    if not chunks:
+        raise UploadError("the document has no content under its headings")
+
+    vectors = OpenAIEmbeddings(model=config.EMBEDDING_MODEL).embed_documents(
+        [chunk.content for chunk in chunks]
+    )
+
+    document_id = repository.insert_document(connection, document)
+    repository.insert_chunks(
+        connection,
+        document_id,
+        [chunk.section for chunk in chunks],
+        [chunk.content for chunk in chunks],
+        vectors,
+    )
+    connection.commit()
+
+    return UploadResult(
+        filename=filename,
+        outcome="updated" if replacing else "added",
+        title=document.title,
+        version=document.version,
+        chunks=len(chunks),
+    )
