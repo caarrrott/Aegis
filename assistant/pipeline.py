@@ -24,16 +24,16 @@ from assistant.generation import Generator
 from assistant.models import Answer
 from assistant.retrieval import Retriever
 
-#retrieval grading result
- #After retrieval, we need to decide:
-#
-# "Do these chunks contain enough information
-# to answer the user's question?"
+
+# After retrieval, the grader checks whether the retrieved chunks contain enough
+# information to answer the user's question, or states what is missing.
 class _Grade(BaseModel):
     sufficient: bool = Field(description="True only if these chunks contain the answer")
     missing: str = Field(description="What is missing, or 'nothing'")
 
 
+# Before retrieval, the intent classifier checks whether the user is asking
+# about an older/previous version of a policy (`wants_history = True`).
 class _Intent(BaseModel):
     wants_history: bool = Field(
         description="True when the question asks about an older or previous version of a rule"
@@ -55,14 +55,11 @@ class Assistant:
         with repository.connection() as connection:
             return self._ask(connection, question, username, today)
 
-
-        #start of the RAG flow
-
     def _ask(self, connection, question: str, username: str, today: date | None) -> Answer:
-        # idenity the user
+        # Step 1: Identify who is asking and load their department/permissions from Postgres
         user = repository.find_user(connection, username)
 
-
+        # Step 2: Decide before searching whether superseded versions should be included.
         # Most questions are about the rule that applies today, so superseded
         # versions stay out of the search entirely. A question asking what the
         # rule used to be needs the opposite, so we decide before searching.
@@ -70,10 +67,7 @@ class Assistant:
             config.prompt("intent") + "\n\nQuestion: " + question
         ).wants_history
 
-
-        # check searchabel doc
-    #asking postgree howmany chunks exist and how many can this user search
-
+        # Step 3: Ask Postgres how many chunks exist in total and how many this user may search
         reach = repository.searchable_chunks(connection, user, wants_history)
 
         trace = [
@@ -82,25 +76,29 @@ class Assistant:
             f"history requested: {wants_history}",
         ]
 
+        # Step 4: Run the corrective retrieval + generation loop
         answer = self._attempt(connection, question, user, wants_history, trace, today)
+
+        # Step 5: Record one audit row in `audit_events`
         self._record(connection, user, question, answer)
         return answer
 
-    #corrective rag
-
     def _attempt(self, connection, question, user, wants_history, trace, today) -> Answer:
+        """Self-correcting RAG loop: retrieve -> judge -> rewrite if needed -> answer."""
         query = question
 
         for attempt in range(1, config.MAX_ATTEMPTS + 1):
+            # Retrieve and rerank chunks inside the user's permissions
             hits = self.retriever.search(connection, query, user, wants_history)
             trace.append(f"attempt {attempt}: searched '{query}', kept {len(hits)} chunks")
 
-            # When the reranker is this sure, asking a second model to agree
-            # costs a call and only adds a way to disagree with ourselves.
+            # High-confidence shortcut: when the reranker scores the top chunk >= 8/10,
+            # asking a second model to agree costs a call and only adds a way to disagree.
             if hits and hits[0].score >= config.HIGH_CONFIDENCE_SCORE:
                 trace.append(f"attempt {attempt}: top chunk scored {hits[0].score}/10, answering")
                 return self._answer(question, hits, trace, today)
 
+            # Otherwise, ask the grader LLM whether these chunks are sufficient to answer
             if hits:
                 grade = self.grader.invoke(
                     config.prompt("grade").format(
@@ -115,12 +113,14 @@ class Assistant:
             else:
                 grade = _Grade(sufficient=False, missing="nothing relevant was found")
 
+            # Corrective step: if attempt 1 was insufficient, rewrite the query using what was missing
             if attempt < config.MAX_ATTEMPTS:
                 query = self.helper.invoke(
                     config.prompt("rewrite").format(question=question, missing=grade.missing)
                 ).content.strip()
                 trace.append(f"corrective retrieval: rewrote the query to '{query}'")
 
+        # After MAX_ATTEMPTS (2), refuse honestly rather than guessing
         trace.append("gave up and escalated")
         return Answer(
             question=question,
@@ -134,6 +134,7 @@ class Assistant:
         )
 
     def _answer(self, question, hits, trace, today) -> Answer:
+        """Generate the cited answer, verify quotes in Python, and attach the trace."""
         answer = self.generator.write(question, hits, today=today)
         trace.append(
             f"answered with {len(answer.citations)} citation(s), grounded={answer.fully_grounded}"

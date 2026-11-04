@@ -37,7 +37,8 @@ cp .env.example .env
 # OPENAI_API_KEY=sk-...
 # DATABASE_URL=postgresql://rag:ragsecret@localhost:5433/ragdb
 
-# Run the app
+# Install dependencies and run the app
+uv sync
 uv run uvicorn assistant.api:app --reload
 ```
 

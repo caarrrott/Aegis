@@ -30,6 +30,7 @@ from psycopg_pool import ConnectionPool
 from assistant import config
 from assistant.models import Hit, SourceDocument, User
 
+# Module-level singleton connection pool
 _pool: ConnectionPool | None = None
 
 
@@ -84,6 +85,7 @@ def pool() -> ConnectionPool:
 
 
 def close_pool() -> None:
+    """Close the connection pool cleanly when the application exits."""
     global _pool
 
     if _pool is not None:
@@ -114,6 +116,7 @@ def find_user(connection: psycopg.Connection, username: str) -> User:
         (username,),
     ).fetchone()
 
+    # Unknown username defaults to guest privileges (public documents only)
     if row is None:
         return User(
             username=username, display_name=username, department="none", is_employee=False
@@ -163,6 +166,7 @@ def list_documents(connection: psycopg.Connection) -> list[dict]:
 
 
 def insert_document(connection: psycopg.Connection, document: SourceDocument) -> int:
+    """Insert a parsed document header into `documents` and return its new ID."""
     row = connection.execute(
         """
         INSERT INTO documents
@@ -219,7 +223,11 @@ def counts(connection: psycopg.Connection) -> dict:
 
 # ------------------------------------------------------------------- search
 
-# One CTE per idea, so the query reads like the pipeline it implements.
+# One CTE per idea, so the query reads like the pipeline it implements:
+# 1. `readable`: filters documents by user permissions and active/history status
+# 2. `semantic`: ranks chunks by pgvector cosine distance (`<=>`)
+# 3. `keyword`:  ranks chunks by PostgreSQL full-text search (`ts_rank` & `@@`)
+# 4. `fused`:    merges both rankings using Reciprocal Rank Fusion (`1.0 / (60 + rank)`)
 HYBRID_SEARCH = """
 WITH readable AS (
     SELECT id FROM documents
@@ -356,6 +364,7 @@ def record_event(
 
 
 def recent_events(connection: psycopg.Connection, limit: int = 10) -> list[dict]:
+    """Fetch the most recent audit rows ordered by timestamp."""
     rows = connection.execute(
         "SELECT at, username, question, answered, grounded, sources "
         "FROM audit_events ORDER BY at DESC LIMIT %s",

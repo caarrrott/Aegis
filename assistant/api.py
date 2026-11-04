@@ -13,7 +13,7 @@ below this file changes.
 """
 
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import FileResponse
@@ -22,6 +22,7 @@ from pydantic import BaseModel, Field
 from assistant import config, ingestion, repository
 from assistant.pipeline import Assistant
 
+# Application state populated at server startup
 state: dict = {}
 
 
@@ -32,49 +33,57 @@ async def lifespan(_: FastAPI):
         repository.create_schema(connection)
 
     state["assistant"] = Assistant()
-    state["started_at"] = datetime.now(timezone.utc)
+    state["started_at"] = datetime.now(UTC)
     yield
-    repository.pool().close()
+    repository.close_pool()
 
 
 app = FastAPI(title="Secure Enterprise RAG Assistant", lifespan=lifespan)
 
 
 class AskRequest(BaseModel):
+    """Request payload for asking a question as a user."""
+
     question: str = Field(min_length=3)
     username: str = "guest"
 
 
 @app.get("/health")
 def health() -> dict:
+    """Check if the database is up and return current document and chunk counts."""
     with repository.connection() as connection:
         # started_at tells you whether you are talking to the server you just
         # started, or to an older one still holding the port.
+        started_at = state.get("started_at") or datetime.now(UTC)
         return {
             "status": "ok",
-            "started_at": state["started_at"].isoformat(timespec="seconds"),
+            "started_at": started_at.isoformat(timespec="seconds"),
             **repository.counts(connection),
         }
 
 
 @app.get("/documents")
 def documents() -> dict:
+    """Return the list of uploaded policy documents."""
     with repository.connection() as connection:
         return {"documents": repository.list_documents(connection)}
 
 
 @app.post("/documents")
 async def upload(file: UploadFile) -> dict:
+    """Read an uploaded Markdown policy file, index it into Postgres, and return the outcome."""
     text = (await file.read()).decode("utf-8", errors="replace")
 
     with repository.connection() as connection:
         try:
-            result = ingestion.store(connection, text, file.filename)
+            result = ingestion.store(connection, text, file.filename or "policy.md")
         except ingestion.UploadError as error:
             raise HTTPException(status_code=400, detail=str(error)) from error
 
         return {
             "outcome": result.outcome,
+            "title": result.title,
+            "version": result.version,
             "message": result.line(),
             **repository.counts(connection),
         }
@@ -82,7 +91,9 @@ async def upload(file: UploadFile) -> dict:
 
 @app.post("/ask")
 def ask(request: AskRequest) -> dict:
-    answer = state["assistant"].ask(request.question, username=request.username)
+    """Run the RAG pipeline for the user's question and return the answer, citations, warnings, and trace."""
+    assistant = state.get("assistant") or Assistant()
+    answer = assistant.ask(request.question, username=request.username)
 
     return {
         "question": answer.question,
@@ -106,7 +117,5 @@ def ask(request: AskRequest) -> dict:
 
 @app.get("/")
 def home() -> FileResponse:
+    """Serve the web client."""
     return FileResponse(config.ROOT / "web" / "index.html")
-
-# uv run python -c "import fastapi, langchain_openai, psycopg, pgvector; print('all good')"
-# uv run uvicorn assistant.api:app --reload

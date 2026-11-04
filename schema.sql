@@ -32,12 +32,17 @@ CREATE TABLE IF NOT EXISTS chunks (
     section TEXT NOT NULL,
     content TEXT NOT NULL,
     embedding VECTOR(1536) NOT NULL,
+    -- Postgres builds and maintains this itself, so the keyword index can
+    -- never drift away from the text it indexes.
     search_text TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', content)) STORED
 );
 
 -- Create the HNSW index for vector search and GIN index for keyword search
-CREATE INDEX IF NOT EXISTS chunks_embedding_idx ON chunks USING hnsw (embedding vector_cosine_ops);
-CREATE INDEX IF NOT EXISTS chunks_search_idx ON chunks USING gin (search_text);
+CREATE INDEX IF NOT EXISTS chunks_embedding_idx
+    ON chunks USING hnsw (embedding vector_cosine_ops);
+
+CREATE INDEX IF NOT EXISTS chunks_search_idx
+    ON chunks USING gin (search_text);
 
 -- 4. Audit table to record every question asked
 CREATE TABLE IF NOT EXISTS audit_events (
@@ -47,7 +52,7 @@ CREATE TABLE IF NOT EXISTS audit_events (
     answered BOOLEAN NOT NULL,
     grounded BOOLEAN NOT NULL,
     sources TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- Seed the demo users for testing access rules

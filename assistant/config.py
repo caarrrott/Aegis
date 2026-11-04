@@ -11,35 +11,37 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+# Load environment variables (OPENAI_API_KEY, DATABASE_URL) from the .env file
 load_dotenv()
 
+# Project directory paths so files are found regardless of current working directory
 ROOT = Path(__file__).resolve().parent.parent
-DOCUMENTS_DIR = ROOT / "documents"
-PROMPTS_DIR = ROOT / "prompts"
-SCHEMA_FILE = ROOT / "schema.sql"
+DOCUMENTS_DIR = ROOT / "documents"  # Sample policy markdown files
+PROMPTS_DIR = ROOT / "prompts"      # Plain-text prompt templates
+SCHEMA_FILE = ROOT / "schema.sql"   # PostgreSQL table & index definitions
 
 # The database. One Postgres holds the documents, the vectors and the access
 # rules, so this single string is the whole data layer.
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", "postgresql://rag:ragsecret@localhost:5433/ragdb"
+DATABASE_URL = (
+    os.getenv("DATABASE_URL") or "postgresql://rag:ragsecret@localhost:5433/ragdb"
 )
 
 # Models. Changing EMBEDDING_MODEL means re-indexing everything, because vectors
 # from two different models cannot be compared.
-EMBEDDING_MODEL = "text-embedding-3-small"
-ANSWER_MODEL = "gpt-4o-mini"
-HELPER_MODEL = "gpt-4o-mini"
+EMBEDDING_MODEL = "text-embedding-3-small"  # Converts text into 1,536-number vectors
+ANSWER_MODEL = "gpt-4o-mini"                # Writes the final cited answer
+HELPER_MODEL = "gpt-4o-mini"                # Runs intent, reranking, grading, and query rewriting
 
-# Chunking
+# Chunking: split long policy sections into 600-character pieces with 120-character overlap
 CHUNK_SIZE = 600
 CHUNK_OVERLAP = 120
 
-# Retrieval
-CANDIDATES = 12  # how many each search brings back before reranking
-TOP_K = 4  # how many survive and reach the model
-MIN_RERANK_SCORE = 4  # 0 to 10, below this a chunk is dropped
+# Retrieval tuning parameters
+CANDIDATES = 12            # how many each search brings back before reranking
+TOP_K = 4                  # how many survive and reach the model
+MIN_RERANK_SCORE = 4       # 0 to 10, below this a chunk is dropped
 HIGH_CONFIDENCE_SCORE = 8  # at or above this the reranker is trusted without a second opinion
-RRF_CONSTANT = 60  # the constant in reciprocal rank fusion
+RRF_CONSTANT = 60          # the constant in reciprocal rank fusion: 1 / (60 + rank)
 
 # The self correcting loop
 MAX_ATTEMPTS = 2  # one retry with a rewritten query, then give up honestly
