@@ -44,23 +44,9 @@ uv run uvicorn assistant.api:app --reload
 
 Open http://localhost:8000.
 
-The web client is a React app whose source lives in `web/app/`. It builds to a
-single self-contained `web/index.html`, which the FastAPI route already serves.
-
-```bash
-cd web/app
-npm install
-npm run build
-```
-
-For frontend development, run the Vite dev server alongside the API. It proxies
-`/ask`, `/documents`, and `/health` to port 8000:
-
-```bash
-cd web/app
-npm run dev
-# open http://localhost:5173
-```
+The web client is a single self-contained `web/index.html` (plain HTML, CSS and
+JavaScript — no build step or framework). The FastAPI route serves it directly,
+so just refresh the browser after editing.
 
 Upload policy files through the web page and ask questions as different users.
 
@@ -108,7 +94,7 @@ charcoal) — with a toggle in the top bar. The choice is remembered in
 | AI models | OpenAI (`gpt-4o-mini`, `text-embedding-3-small`) |
 | Database  | PostgreSQL 17 + pgvector (Docker)                |
 | Search    | Hybrid (vector + keyword)                        |
-| Website   | React 19 + Vite (served as one HTML file)        |
+| Website   | Single-file HTML/CSS/JS (served by FastAPI)       |
 
 ## How to format a policy file
 
@@ -158,8 +144,7 @@ Department examples:
 │ └── api.py # Web endpoints
 ├── prompts/ # AI instructions (plain text files)
 ├── web/
-│ ├── app/ # React 19 + Vite source (src/ components, styles, api.js, icons, users)
-│ └── index.html # Built client served by FastAPI
+│ └── index.html # Single-file client served by FastAPI (HTML/CSS/JS)
 ```
 
 ## Who can see what
