@@ -44,11 +44,11 @@ uv run uvicorn assistant.api:app --reload
 
 Open http://localhost:8000.
 
-The web client is built into `web/index.html`, which the FastAPI route already
-serves. Rebuild it after changing the UI:
+The web client is a React app whose source lives in `web/app/`. It builds to a
+single self-contained `web/index.html`, which the FastAPI route already serves.
 
 ```bash
-cd web
+cd web/app
 npm install
 npm run build
 ```
@@ -57,7 +57,7 @@ For frontend development, run the Vite dev server alongside the API. It proxies
 `/ask`, `/documents`, and `/health` to port 8000:
 
 ```bash
-cd web
+cd web/app
 npm run dev
 # open http://localhost:5173
 ```
@@ -158,7 +158,7 @@ Department examples:
 │ └── api.py # Web endpoints
 ├── prompts/ # AI instructions (plain text files)
 ├── web/
-│ ├── app/ # React source (components, styles, API client)
+│ ├── app/ # React 19 + Vite source (src/ components, styles, api.js, icons, users)
 │ └── index.html # Built client served by FastAPI
 ```
 
